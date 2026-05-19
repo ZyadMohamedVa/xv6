@@ -7,6 +7,19 @@
 #include "mmu.h"
 #include "proc.h"
 
+#define MAX_USERS 10
+#define MAX_USERNAME 16
+#define MAX_PASSWORD 16
+
+struct user_entry {
+  char username[MAX_USERNAME];
+  char password[MAX_PASSWORD];
+  int uid;
+  int used;
+};
+
+struct user_entry users[MAX_USERS];
+
 int
 sys_fork(void)
 {
@@ -95,12 +108,15 @@ sys_whoami(void)
 {
   return myproc()->uid;
 }
+
+
 int
 sys_useradd(void)
 {
   char *username;
   char *password;
   int uid;
+  int i;
 
   if(argstr(0, &username) < 0)
     return -1;
@@ -111,7 +127,25 @@ sys_useradd(void)
   if(argint(2, &uid) < 0)
     return -1;
 
-  cprintf("useradd: username=%s uid=%d\n", username, uid);
+  for(i = 0; i < MAX_USERS; i++) {
+      if(users[i].used && strncmp(users[i].username, username, MAX_USERNAME) == 0) {
+      cprintf("useradd: user already exists\n");
+      return -1;
+    }
+  }
 
-  return 0;
+  for(i = 0; i < MAX_USERS; i++) {
+    if(users[i].used == 0) {
+      safestrcpy(users[i].username, username, MAX_USERNAME);
+      safestrcpy(users[i].password, password, MAX_PASSWORD);
+      users[i].uid = uid;
+      users[i].used = 1;
+
+      cprintf("useradd: created username=%s uid=%d\n", username, uid);
+      return 0;
+    }
+  }
+
+  cprintf("useradd: user table full\n");
+  return -1;
 }
