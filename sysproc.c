@@ -95,3 +95,23 @@ sys_whoami(void)
 {
   return myproc()->uid;
 }
+int
+sys_useradd(void)
+{
+  char *username;
+  char *password;
+  int uid;
+
+  if(argstr(0, &username) < 0)
+    return -1;
+
+  if(argstr(1, &password) < 0)
+    return -1;
+
+  if(argint(2, &uid) < 0)
+    return -1;
+
+  cprintf("useradd: username=%s uid=%d\n", username, uid);
+
+  return 0;
+}
