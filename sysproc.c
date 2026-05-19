@@ -160,3 +160,35 @@ sys_useradd(void)
   cprintf("useradd: user table full\n");
   return -1;
 }
+int
+sys_login(void)
+{
+  char *username;
+  char *password;
+  uint hash;
+  int i;
+
+  if(argstr(0, &username) < 0)
+    return -1;
+
+  if(argstr(1, &password) < 0)
+    return -1;
+
+  hash = simple_hash(password);
+
+  for(i = 0; i < MAX_USERS; i++) {
+    if(users[i].used &&
+       strncmp(users[i].username, username, MAX_USERNAME) == 0 &&
+       users[i].password_hash == hash) {
+
+      myproc()->uid = users[i].uid;
+      myproc()->gid = users[i].uid;
+
+      cprintf("login: success username=%s uid=%d\n", username, users[i].uid);
+      return users[i].uid;
+    }
+  }
+
+  cprintf("login: failed username=%s\n", username);
+  return -1;
+}

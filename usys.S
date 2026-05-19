@@ -32,3 +32,4 @@ SYSCALL(uptime)
 
 SYSCALL(whoami)
 SYSCALL(useradd)
+SYSCALL(login)
