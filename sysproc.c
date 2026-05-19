@@ -13,13 +13,23 @@
 
 struct user_entry {
   char username[MAX_USERNAME];
-  char password[MAX_PASSWORD];
+ uint password_hash;
   int uid;
   int used;
 };
 
 struct user_entry users[MAX_USERS];
+uint
+simple_hash(char *s)
+{
+  uint hash = 5381;
+  int c;
 
+  while((c = *s++) != 0)
+    hash = ((hash << 5) + hash) + c;
+
+  return hash;
+}
 int
 sys_fork(void)
 {
@@ -137,11 +147,12 @@ sys_useradd(void)
   for(i = 0; i < MAX_USERS; i++) {
     if(users[i].used == 0) {
       safestrcpy(users[i].username, username, MAX_USERNAME);
-      safestrcpy(users[i].password, password, MAX_PASSWORD);
+      users[i].password_hash = simple_hash(password);
       users[i].uid = uid;
       users[i].used = 1;
 
-      cprintf("useradd: created username=%s uid=%d\n", username, uid);
+      cprintf("useradd: created username=%s uid=%d hash=%d\n",
+        username, uid, users[i].password_hash);
       return 0;
     }
   }
