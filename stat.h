@@ -7,5 +7,7 @@ struct stat {
   int dev;     // File system's disk device
   uint ino;    // Inode number
   short nlink; // Number of links to file
+  short owner;
+  short mode;
   uint size;   // Size of file in bytes
 };
