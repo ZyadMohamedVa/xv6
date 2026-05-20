@@ -186,6 +186,7 @@ UPROGS=\
 	_testuseradd\
 	_testlogin\
 	_testauth\
+        _testperm\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
