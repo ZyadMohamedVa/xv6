@@ -39,6 +39,10 @@ trap(struct trapframe *tf)
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)
       exit();
+
+    cprintf("AUDIT: pid=%d uid=%d trap=SYSCALL eip=%x\n",
+            myproc()->pid, myproc()->uid, tf->eip);
+
     myproc()->tf = tf;
     syscall();
     if(myproc()->killed)
