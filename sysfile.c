@@ -473,5 +473,28 @@ sys_chmod(void)
 int
 sys_chown(void)
 {
+  char *path;
+  int owner;
+  struct inode *ip;
+
+  if(argstr(0, &path) < 0 || argint(1, &owner) < 0)
+    return -1;
+
+  if(owner < 0)
+    return -1;
+
+  begin_op();
+
+  if((ip = namei(path)) == 0){
+    end_op();
+    return -1;
+  }
+
+  ilock(ip);
+  ip->owner = owner;
+  iupdate(ip);
+  iunlockput(ip);
+
+  end_op();
   return 0;
 }
