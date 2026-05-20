@@ -312,6 +312,18 @@ sys_open(void)
       end_op();
       return -1;
     }
+if(myproc()->uid != 0 && myproc()->uid != ip->owner){
+  if(!(ip->mode & 1) && !(omode & O_WRONLY)){
+    iunlockput(ip);
+    end_op();
+    return -1;
+  }
+  if(!(ip->mode & 2) && ((omode & O_WRONLY) || (omode & O_RDWR))){
+    iunlockput(ip);
+    end_op();
+    return -1;
+  }
+}
   }
 
   if((f = filealloc()) == 0 || (fd = fdalloc(f)) < 0){
