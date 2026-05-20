@@ -294,9 +294,10 @@ sys_open(void)
     return -1;
 
   begin_op();
-
   if(omode & O_CREATE){
     ip = create(path, T_FILE, 0, 0);
+    if(ip)
+      ip->owner = myproc()->uid;
     if(ip == 0){
       end_op();
       return -1;
