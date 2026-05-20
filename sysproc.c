@@ -192,3 +192,72 @@ sys_login(void)
   cprintf("login: failed username=%s\n", username);
   return -1;
 }
+int
+sys_userdel(void)
+{
+  char *username;
+  int i;
+
+  if(argstr(0, &username) < 0)
+    return -1;
+
+  for(i = 0; i < MAX_USERS; i++) {
+    if(users[i].used &&
+       strncmp(users[i].username, username, MAX_USERNAME) == 0) {
+
+      users[i].used = 0;
+      users[i].username[0] = 0;
+      users[i].password_hash = 0;
+      users[i].uid = -1;
+
+      cprintf("userdel: deleted username=%s\n", username);
+      return 0;
+    }
+  }
+
+  cprintf("userdel: user not found username=%s\n", username);
+  return -1;
+}
+
+int
+sys_passwd(void)
+{
+  char *username;
+  char *oldpass;
+  char *newpass;
+  uint oldhash;
+  uint newhash;
+  int i;
+
+  if(argstr(0, &username) < 0)
+    return -1;
+
+  if(argstr(1, &oldpass) < 0)
+    return -1;
+
+  if(argstr(2, &newpass) < 0)
+    return -1;
+
+  oldhash = simple_hash(oldpass);
+  newhash = simple_hash(newpass);
+
+  for(i = 0; i < MAX_USERS; i++) {
+    if(users[i].used &&
+       strncmp(users[i].username, username, MAX_USERNAME) == 0) {
+
+      if(users[i].password_hash != oldhash) {
+        cprintf("passwd: wrong old password for username=%s\n", username);
+        return -1;
+      }
+
+      users[i].password_hash = newhash;
+      cprintf("passwd: password changed username=%s newhash=%d\n",
+              username, newhash);
+      return 0;
+    }
+  }
+
+  cprintf("passwd: user not found username=%s\n", username);
+  return -1;
+}
+

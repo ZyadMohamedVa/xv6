@@ -23,3 +23,5 @@
 #define SYS_whoami 22
 #define SYS_useradd 23
 #define SYS_login 24
+#define SYS_userdel 25
+#define SYS_passwd 26

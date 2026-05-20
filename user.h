@@ -27,6 +27,8 @@ int uptime(void);
 int whoami(void);
 int useradd(char*, char*, int);
 int login(char*, char*);
+int userdel(char*);
+int passwd(char*, char*, char*);
 
 // ulib.c
 int stat(const char*, struct stat*);

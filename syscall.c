@@ -107,6 +107,8 @@ extern int sys_wait(void);
 extern int sys_whoami(void);
 extern int sys_useradd(void);
 extern int sys_login(void);
+extern int sys_userdel(void);
+extern int sys_passwd(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -134,6 +136,8 @@ static int (*syscalls[])(void) = {
 [SYS_whoami]  sys_whoami,
 [SYS_useradd] sys_useradd,
 [SYS_login]   sys_login,
+[SYS_userdel] sys_userdel,
+[SYS_passwd]  sys_passwd,
 };
 
 void
