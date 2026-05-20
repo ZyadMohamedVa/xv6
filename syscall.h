@@ -26,3 +26,4 @@
 #define SYS_userdel 25
 #define SYS_passwd 26
 #define SYS_chmod  27
+#define SYS_chown  28

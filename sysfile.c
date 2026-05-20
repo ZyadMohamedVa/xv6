@@ -470,3 +470,8 @@ sys_chmod(void)
   end_op();
   return 0;
 }
+int
+sys_chown(void)
+{
+  return 0;
+}
