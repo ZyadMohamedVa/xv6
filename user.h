@@ -1,4 +1,4 @@
-nano user.hstruct stat;
+struct stat;
 struct rtcdate;
 
 // system calls
