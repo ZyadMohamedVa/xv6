@@ -1,4 +1,5 @@
 OBJS = \
+        audit.o\
 	bio.o\
 	console.o\
 	exec.o\
