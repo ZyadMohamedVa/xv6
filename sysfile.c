@@ -445,5 +445,28 @@ sys_pipe(void)
 int
 sys_chmod(void)
 {
+  char *path;
+  int mode;
+  struct inode *ip;
+
+  if(argstr(0, &path) < 0 || argint(1, &mode) < 0)
+    return -1;
+
+  if(mode < 0 || mode > 3)
+    return -1;
+
+  begin_op();
+
+  if((ip = namei(path)) == 0){
+    end_op();
+    return -1;
+  }
+
+  ilock(ip);
+  ip->mode = mode;
+  iupdate(ip);
+  iunlockput(ip);
+
+  end_op();
   return 0;
 }
