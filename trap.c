@@ -7,6 +7,7 @@
 #include "x86.h"
 #include "traps.h"
 #include "spinlock.h"
+#include "audit.h"
 
 // Interrupt descriptor table (shared by all CPUs).
 struct gatedesc idt[256];
@@ -42,6 +43,8 @@ trap(struct trapframe *tf)
 
     cprintf("AUDIT: pid=%d uid=%d trap=SYSCALL eip=%x\n",
             myproc()->pid, myproc()->uid, tf->eip);
+
+    audit_log(myproc()->pid, myproc()->uid, tf->eax, tf->eip);
 
     myproc()->tf = tf;
     syscall();
