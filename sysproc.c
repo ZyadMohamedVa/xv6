@@ -30,6 +30,32 @@ simple_hash(char *s)
 
   return hash;
 }
+
+int users_initialized = 0;
+
+void
+init_default_users(void)
+{
+  if(users_initialized)
+    return;
+
+  safestrcpy(users[0].username, "admin", MAX_USERNAME);
+  users[0].password_hash = simple_hash("admin");
+  users[0].uid = 0;
+  users[0].used = 1;
+
+  safestrcpy(users[1].username, "patient", MAX_USERNAME);
+  users[1].password_hash = simple_hash("patient");
+  users[1].uid = 1;
+  users[1].used = 1;
+
+  safestrcpy(users[2].username, "doctor", MAX_USERNAME);
+  users[2].password_hash = simple_hash("doctor");
+  users[2].uid = 2;
+  users[2].used = 1;
+
+  users_initialized = 1;
+}
 int
 sys_fork(void)
 {
@@ -167,6 +193,8 @@ sys_login(void)
   char *password;
   uint hash;
   int i;
+
+  init_default_users();
 
   if(argstr(0, &username) < 0)
     return -1;
