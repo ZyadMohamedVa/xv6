@@ -109,6 +109,7 @@ extern int sys_useradd(void);
 extern int sys_login(void);
 extern int sys_userdel(void);
 extern int sys_passwd(void);
+extern int sys_chmod(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -138,6 +139,7 @@ static int (*syscalls[])(void) = {
 [SYS_login]   sys_login,
 [SYS_userdel] sys_userdel,
 [SYS_passwd]  sys_passwd,
+[SYS_chmod]   sys_chmod,
 };
 
 void
