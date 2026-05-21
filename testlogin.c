@@ -22,14 +22,14 @@ main(void)
 {
   printf(1, "Creating users...\n");
 
-  useradd("patient", "1234", 1);
-  useradd("doctor", "1234", 2);
+  useradd("patient", "patient", 1);
+  useradd("doctor", "doctor", 2);
 
   printf(1, "\nCurrent role before login:\n");
   print_role();
 
   printf(1, "\nLogging in as patient...\n");
-  if(login("patient", "1234") >= 0)
+  if(login("patient", "patient") >= 0)
     printf(1, "patient login successful\n");
   else
     printf(1, "patient login failed\n");
@@ -47,7 +47,7 @@ main(void)
   print_role();
 
   printf(1, "\nLogging in as doctor...\n");
-  if(login("doctor", "1234") >= 0)
+  if(login("doctor", "doctor") >= 0)
     printf(1, "doctor login successful\n");
   else
     printf(1, "doctor login failed\n");
