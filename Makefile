@@ -189,6 +189,7 @@ UPROGS=\
 	_testauth\
         _testperm\
         _testaudit\
+        _medtest\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
