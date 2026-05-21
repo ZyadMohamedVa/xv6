@@ -23,14 +23,14 @@ main(void)
   printf(1, "=== AUTHENTICATION FULL TEST ===\n");
 
   printf(1, "\n[1] Create users\n");
-  useradd("patient", "1234", 1);
-  useradd("doctor", "abcd", 2);
+  useradd("patient", "patient", 1);
+  useradd("doctor", "doctor", 2);
 
   printf(1, "\n[2] Current role before login\n");
   print_role();
 
   printf(1, "\n[3] Login patient with correct password\n");
-  if(login("patient", "1234") >= 0)
+  if(login("patient", "patient") >= 0)
     printf(1, "PASS: patient login accepted\n");
   else
     printf(1, "FAIL: patient login rejected\n");
@@ -50,13 +50,13 @@ main(void)
     printf(1, "FAIL: passwd accepted wrong old password\n");
 
   printf(1, "\n[6] Change patient password with correct old password\n");
-  if(passwd("patient", "1234", "9999") == 0)
+  if(passwd("patient", "patient", "9999") == 0)
     printf(1, "PASS: patient password changed\n");
   else
     printf(1, "FAIL: patient password not changed\n");
 
   printf(1, "\n[7] Login patient with old password\n");
-  if(login("patient", "1234") < 0)
+  if(login("patient", "patient") < 0)
     printf(1, "PASS: old password rejected\n");
   else
     printf(1, "FAIL: old password still accepted\n");
@@ -75,7 +75,7 @@ main(void)
     printf(1, "FAIL: doctor not deleted\n");
 
   printf(1, "\n[10] Login deleted doctor\n");
-  if(login("doctor", "abcd") < 0)
+  if(login("doctor", "doctor") < 0)
     printf(1, "PASS: deleted doctor cannot login\n");
   else
     printf(1, "FAIL: deleted doctor can still login\n");
