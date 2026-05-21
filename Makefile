@@ -190,6 +190,8 @@ UPROGS=\
         _testperm\
         _testaudit\
         _medtest\
+        _chmodfile\
+        _chownfile\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
