@@ -289,3 +289,19 @@ sys_passwd(void)
   return -1;
 }
 
+#include "audit.h"
+
+int
+sys_auditread(void)
+{
+  char *buf;
+  int max;
+
+  if(myproc()->uid != 0)
+    return -1;
+
+  if(argptr(0, &buf, sizeof(char*)) < 0 || argint(1, &max) < 0)
+    return -1;
+
+  return audit_read(buf, max);
+}

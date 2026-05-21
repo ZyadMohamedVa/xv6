@@ -27,3 +27,4 @@
 #define SYS_passwd 26
 #define SYS_chmod  27
 #define SYS_chown  28
+#define SYS_auditread 29
