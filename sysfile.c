@@ -476,6 +476,13 @@ sys_chmod(void)
   }
 
   ilock(ip);
+
+  if(myproc()->uid != 0 && myproc()->uid != ip->owner){
+    iunlockput(ip);
+    end_op();
+    return -1;
+  }
+
   ip->mode = mode;
   iupdate(ip);
   iunlockput(ip);
@@ -504,6 +511,13 @@ sys_chown(void)
   }
 
   ilock(ip);
+
+  if(myproc()->uid != 0){
+    iunlockput(ip);
+    end_op();
+    return -1;
+  }
+
   ip->owner = owner;
   iupdate(ip);
   iunlockput(ip);
