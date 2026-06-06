@@ -5,18 +5,20 @@
 int
 main(void)
 {
-  char buf[80];
+  char buf[512];
   int n;
 
-  printf(1, "=== Phase 3 Audit Test ===\n");
+  printf(1, "=== Kernel Audit Log ===\n");
 
-  n = auditread(buf, sizeof(buf));
+  n = auditread(buf, sizeof(buf)-1);
 
   if(n < 0){
     printf(1, "auditread denied: non-admin user\n");
-  } else {
-    printf(1, "audit entries read=%d\n", n);
+    exit();
   }
+
+  buf[n] = 0;
+  printf(1, "%s\n", buf);
 
   exit();
 }

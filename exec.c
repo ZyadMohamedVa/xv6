@@ -26,13 +26,7 @@ exec(char *path, char **argv)
     cprintf("exec: fail\n");
     return -1;
   }
-  ilock(ip);
-  if(myproc()->uid != 0 && myproc()->uid != ip->owner && !(ip->mode & 1)){
-    iunlockput(ip);
-    end_op();
-    return -1;
-  }
-  pgdir = 0;
+  ilock(ip);  pgdir = 0;
 
   // Check ELF header
   if(readi(ip, (char*)&elf, 0, sizeof(elf)) != sizeof(elf))

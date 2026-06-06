@@ -313,7 +313,7 @@ sys_open(void)
       end_op();
       return -1;
     }
-if(myproc()->uid != 0 && myproc()->uid != ip->owner){
+if(myproc()->uid != 0){
   if(!(ip->mode & 1) && !(omode & O_WRONLY)){
     iunlockput(ip);
     end_op();

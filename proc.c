@@ -65,6 +65,13 @@ myproc(void) {
   return p;
 }
 
+
+int
+currentuid(void)
+{
+  return myproc()->uid;
+}
+
 //PAGEBREAK: 32
 // Look in the process table for an UNUSED proc.
 // If found, change state to EMBRYO and initialize

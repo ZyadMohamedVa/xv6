@@ -22,12 +22,23 @@ int
 main(void)
 {
   int fd, n;
+  int before, after;
   struct stat st;
   char buf[80];
 
   printf(1, "=== Medical Device Security Compliance Test ===\n");
 
   check("whoami syscall works", whoami() >= 0);
+  check("running as admin", whoami() == 0);
+  check("invalid login rejected", login("doctor", "wrong") < 0);
+  check("valid admin login accepted", login("admin", "admin") >= 0);
+
+  before = auditread(buf, sizeof(buf));
+  check("integration attack denied", login("doctor", "wrong") < 0);
+  after = auditread(buf, sizeof(buf));
+  check("integration denial visible in audit log", after >= before && after > 0);
+
+  unlink("bonusfile");
 
   fd = open("bonusfile", O_CREATE | O_RDWR);
   check("create file", fd >= 0);
@@ -51,6 +62,10 @@ main(void)
   n = auditread(buf, sizeof(buf));
   check("admin can read audit log", n >= 0);
   check("audit log contains entries", n > 0);
+
+  if(n > 0){
+    printf(1, "Audit evidence UID stream: %s\n", buf);
+  }
 
   printf(1, "=== Compliance Result: passed=%d failed=%d ===\n", passed, failed);
 
