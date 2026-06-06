@@ -27,6 +27,11 @@ exec(char *path, char **argv)
     return -1;
   }
   ilock(ip);
+  if(myproc()->uid != 0 && myproc()->uid != ip->owner && !(ip->mode & 1)){
+    iunlockput(ip);
+    end_op();
+    return -1;
+  }
   pgdir = 0;
 
   // Check ELF header
